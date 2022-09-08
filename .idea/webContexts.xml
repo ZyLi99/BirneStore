@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/web/AdminLogin.jsp" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/bootstrap-4.6.1-examples/cover/index.html" value="file://$PROJECT_DIR$/web/bootstrap-4.6.1-examples/cover" />
+        <entry key="file://$PROJECT_DIR$/web/hottestSecret.jsp" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/index.html" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/index.jsp" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/index3.html" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/login.jsp" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/static/hottestSecret.html" value="file://$PROJECT_DIR$/web/static" />
+        <entry key="file://$PROJECT_DIR$/web/static/share-my-secrets.html" value="file://$PROJECT_DIR$/web/static" />
+        <entry key="file://$PROJECT_DIR$/web/static/vh.html" value="file://$PROJECT_DIR$/web/static" />
+      </map>
+    </option>
+  </component>
+</project>
