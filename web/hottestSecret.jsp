@@ -150,6 +150,7 @@
         .textInfo{
             border: solid white;
             border-radius: 0.3;
+            margin-left: 25px;
         }
     </style>
 
