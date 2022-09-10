@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: 18303
@@ -88,14 +89,14 @@
             position: relative;
             right:134px;
             background-color:darkgrey;
-            top:110px;
+            top:100px;
         }
         .itemSecret{
             position:absolute;
             bottom: 530px;
             left:200px;
             background-color: white;
-            width:610px;
+            width:650px;
             height: 150px;
             border:solid dimgrey;
             opacity: 0.4;
@@ -106,7 +107,7 @@
             bottom: 382px;
             left:200px;
             background-color: white;
-            width:610px;
+            width:650px;
             height: 150px;
             border:solid dimgrey;
             opacity: 0.4;
@@ -117,7 +118,7 @@
             bottom: 235px;
             left:200px;
             background-color: white;
-            width:610px;
+            width:650px;
             height: 150px;
             border:solid dimgrey;
             opacity: 0.4;
@@ -128,7 +129,7 @@
             bottom: 86px;
             left:200px;
             background-color: white;
-            width:610px;
+            width:650px;
             height: 150px;
             border:solid dimgrey;
             opacity: 0.4;
@@ -153,7 +154,7 @@
     </style>
 
 </head>
-<body>
+<body style="background-color: white">
 <script>
     window.onload=function(){
 
@@ -196,19 +197,19 @@
         }
 
 
-        var c4=document.getElementsByClassName("answer");
-        for(var i=0;i<c.length;i++){
-            var color
-            c4[i].onmouseover=function () {
-                color=this.style.color;
-                this.style.color="#6699ff"
-
-            }
-            c4[i].onmouseout=function(){
-                this.style.color=color;
-            }
-
-        }
+        // var c4=document.getElementsByClassName("answer");
+        // for(var i=0;i<c.length;i++){
+        //     var color
+        //     c4[i].onmouseover=function () {
+        //         color=this.style.color;
+        //         this.style.color="#6699ff"
+        //
+        //     }
+        //     c4[i].onmouseout=function(){
+        //         this.style.color=color;
+        //     }
+        //
+        // }
 
 
         // var c5=document.getElementsByClassName("melden");
@@ -241,8 +242,8 @@
                             var d=JSON.parse(result[i]);
                            var name1=d.id;
                            buttonName[i].name=name1;
-                            buttonName2[i].name=name1+1;
-                            buttonName3[i].name=name1+2;
+                            buttonName2[i].name=name1+100000;
+                            buttonName3[i].name=name1+200000;
 
 
                         }
@@ -264,6 +265,8 @@
 
         })
  $(".melden").attr("onclick","getMelden(this.name)");
+        $(".answer").attr("onclick","getAnswer(this.name)");
+
 
 
     }
@@ -317,19 +320,19 @@
     function getMelden(name){
         var colorgetter=document.getElementsByName(name);
         alert(name)
-        for(var j=0;j<colorgetter.length;j++){
-            if(colorgetter[j].style.color=="red")alert("u are already meldet");
+
+            alert(colorgetter[0].innerHTML)
+
+            if(colorgetter[0].style.color=="red"&&colorgetter[0].innerHTML=='<i class="bi bi-exclamation-circle"></i>')alert("u are already meldet");
             else{
                 alert("are u motherfucker sure?")
                 var c={}
                 c.id=name;
-                alert("are u motherfucker really sure?"+c)
                 $.ajax( {
                     type :"POST",
                     url :"/PostMelden",
                     data: c,
                     success : function(result) {
-                       alert(result)
                         result= JSON.parse(result);
 
                         if(result.payload=="数据异常"){
@@ -339,11 +342,11 @@
                         else {
 
                             var c=document.getElementsByName(name);
-                            for(var j=0;j<c.length;j++){
-                                if(c[j].style.color!="red"){
-                                    c[j].style.color="red";
 
-                                }
+                                if(c[0].style.color!="red"&&c[0].innerHTML=='<i class="bi bi-exclamation-circle"></i>'){
+                                    c[0].style.color="red";
+
+
 
                             }
 
@@ -354,10 +357,110 @@
 
 
             }
-        }
+
     }
 
+function getAnswer(a){
+        var userId=a-200000;
+        var user={}
+    user.id=userId
+    var c=document.getElementById("commentArea")
+    c.name=userId;
+    c.style.display="block"
+    $.ajax( {
+        type :"POST",
+        url :"/PostComment",
+        data: user,
+        success : function(result) {
+            result= JSON.parse(result);
 
+            if(result.payload=="用户不存在"){
+                alert("unknow error")
+            }
+
+            else {
+                 var commName=result.author_id
+                var myName=result.user_id
+                var text=result.text
+                if(text!=undefined){
+                    var commA=document.getElementById("vorherigeComment")
+                    commA.innerHTML=""
+                    commA.innerHTML=text;
+                    var d1=document.getElementById("myUserId")
+                    d1.innerHTML=myName
+
+                    var d2=document.getElementById("authorId")
+                    d2.innerHTML=commName
+
+                }
+                else{
+                    var commB=document.getElementById("vorherigeComment")
+                    commB.innerHTML=""
+                    var d111=document.getElementById("myUserId")
+                    d111.innerHTML=myName
+                    var d21=document.getElementById("authorId")
+                    d21.innerHTML=commName
+                }
+
+
+
+
+
+
+            }}
+
+    })
+}
+
+function updateMyComm(){
+        var c=document.getElementById("vorherigeComment").innerHTML
+        var c1=document.getElementById("myUserId").innerHTML
+        var c2=document.getElementById("authorId").innerHTML
+        var c3=document.getElementById("whatISay").value
+    var commA=document.getElementById("vorherigeComment")
+    commA.innerHTML=c+'&nbsp&nbsp<a href="#" onclick="answerComm(\''+c1+'\')">'+c1+'</a> say '+'to :<a href="#" onclick="answerComm2(\''+c2+'\')">'+c2+'</a>'+':'+c3+'<br>'
+       var comit=commA.innerHTML
+
+    var user={}
+    user.text_id=document.getElementById("commentArea").name;
+    user.text=comit
+
+    $.ajax( {
+        type :"POST",
+        url :"/insertComment",
+        data: user,
+        success : function(result) {
+            result= JSON.parse(result);
+
+            if(result.payload=="error"){
+                alert("unknow error")
+            }
+
+            else {
+
+                $("#whatISay").val("")
+
+            }}
+
+    })
+
+
+}
+function answerComm(authorName){
+       alert(authorName)
+    var c2=document.getElementById("authorId")
+    c2.innerHTML=authorName;
+}
+    function answerComm2(authorName){
+        alert(authorName+1)
+        var c2=document.getElementById("authorId")
+        c2.innerHTML=authorName;
+    }
+
+function CloseMe() {
+    var des1 = document.getElementById("commentArea")
+    des1.style.display="none"
+}
 </script>
 <img  src="../img/sky.jpg" style="width:1311px;position: relative;right: 10px;bottom: 10px;z-index: 0"/>
 <div class="logo"> Keep&nbspScret&nbsp&nbsp<span><i class="bi bi-arrow-through-heart"></i></span> </div>
@@ -581,6 +684,21 @@
 
     </div>
     <div style="background-color: white;width:1100px;height: 200px"><br><span style="position: relative;top:140px;color: dimgrey;margin-left: 400px;">product by Zhuyi Li</span></div>
+</div>
+
+<div id="commentArea" style="border:solid cornflowerblue;position: absolute;bottom:75px;left:420px; background-color: white;display: none;width:500px;height:400px;border-radius: 20px">
+    <div style="height: 230px;overflow:auto;background:#EEEEEE;border-radius: 20px;padding-top: 20px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;"  id="vorherigeComment">
+
+    </div>
+
+    <br>
+    <div style="margin-bottom: 10px">&nbsp  <span id="myUserId" style="color:cornflowerblue;font-weight: bold" > </span>&nbsp answer to:&nbsp<span id="authorId" style="color:darkred;font-weight: blod"></span></div>
+
+    <textarea style="margin-bottom: 10px;margin-left: 2px;padding-left: 10px;resize: block;width:300px;border: solid cornflowerblue;border-radius: 20px" id="whatISay" rows="3" rols="200" ></textarea>
+
+    <div>  <button style="border-radius: 0.3;background-color: snow;margin-left:20px;position: absolute;bottom: 30px;left:300px;border-radius: 20px;background-color: cornflowerblue;border: solid cornflowerblue;color:white;font-weight: blod" onclick="updateMyComm()">Submit</button>
+        <button style="border-radius: 0.3;background-color: snow;margin-left:10px;position: absolute;bottom: 30px;left:400px;border-radius: 20px;background-color: cornflowerblue;border: solid cornflowerblue;color: white;font-weight: blod" onclick="CloseMe()">Close</button>
+    </div>
 </div>
 
 </body>

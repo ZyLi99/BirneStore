@@ -51,12 +51,24 @@
         select username from `melden-formular` where `text-id`=#{name}
     </select>
     <insert id="addMelden" parameterType="java.util.HashMap" >
-      insert into `melden-formular`(id,username,times)values(#{id},#{username},1)
+      insert into `melden-formular`(`text-id`,username,times)values(#{id},#{username},1)
 
     </insert>
       <update id="setInsertMelden" parameterType="java.util.HashMap" >
           update `melden-formular`set times=times+1 where `text-id`=#{id}
       </update>
-
+<select id="getseinName" parameterType="int" resultType="String">
+    select username from text where id=#{name}
+</select>
+    <select id="searchVorherigText" parameterType="int" resultType="String">
+        select text from commt where text_id=#{id}
+    </select>
+    <insert id="insertText" parameterType="java.util.HashMap">
+        insert into commt(text,text_id)value(#{inhalt},#{text_id})
+    </insert>
+    <update id="updateText" parameterType="java.util.HashMap">
+        update commt set text=#{inhalt} where text_id=#{text_id}
+        update commt set text=#{inhalt} where text_id=#{text_id}
+    </update>
 
 </mapper>

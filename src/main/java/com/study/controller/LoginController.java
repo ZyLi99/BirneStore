@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.study.bean.MyResponse;
 import com.study.bean.SecretList;
 import com.study.bean.User;
+import com.study.bean.comment;
 import com.study.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -136,8 +137,9 @@ public class LoginController {
 
     @PostMapping("/PostMelden")
     public String getMelden(SecretList Id, HttpServletRequest request){
-        int name=Id.getId()-1;
+        int name=Id.getId()-100000;
         HashMap numLikes = userDao.getMelden(name);
+        numLikes.get("id");
         if (numLikes==null) return MyResponse.failed("数据异常");
         else{
             String getUsername=userDao.searchMelden(name);
@@ -145,9 +147,59 @@ public class LoginController {
 
                 int insertNewMelden=userDao.setInsertMelden(numLikes);
             }
-            int insertNewLike=userDao.addMelden(numLikes);
+            else{
+            int insertNewLike=userDao.addMelden(numLikes);}
         }
 
         return MyResponse.success("举报成功");
+    }
+    @PostMapping("/PostComment")
+    public String getComment(SecretList Id, HttpServletRequest request){
+       comment comm=new comment();
+        int name=Id.getId();
+        HttpSession session= request.getSession();
+        String myUsername= (String) session.getAttribute("username");
+        comm.setUser_id(myUsername);
+
+        String seinUserName = userDao.getseinName(name);
+        if (seinUserName==null) return MyResponse.failed("用户不存在");
+        else{
+            comm.setAuthor_id(seinUserName);
+            String getVorherigText=userDao.searchVorherigText(name);
+
+            comm.setText(getVorherigText);
+
+
+
+        }
+
+        return JSON.toJSONString(comm);
+    }
+
+    @PostMapping("/insertComment")
+    public String insertComment(comment Id, HttpServletRequest request){
+
+        int text_id=Id.getText_id();
+        String inhalt=Id.getText();
+        HashMap hash=new HashMap();
+        hash.put("text_id",text_id);
+        hash.put("inhalt",inhalt);
+
+        String getVorherigText=userDao.searchVorherigText(text_id);
+        if(getVorherigText==null){
+            int insertText=userDao.insertText(hash);
+            if(insertText==0){
+                return MyResponse.failed("error");
+            }
+        }
+        else{
+            int insertText=userDao.updateText(hash);
+            if(insertText==0){
+                return MyResponse.failed("error");
+            }
+        }
+
+
+        return MyResponse.success("更新成功");
     }
 }

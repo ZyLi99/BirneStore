@@ -24,4 +24,8 @@ public interface UserDao {
     String searchMelden(Integer name);
     int setInsertMelden(HashMap hash);
     int addMelden(HashMap hash);
+    String getseinName(int name);
+    String searchVorherigText(int id);
+    int insertText(HashMap text);
+    int updateText(HashMap text);
 }
