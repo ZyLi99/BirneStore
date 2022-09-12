@@ -217,11 +217,11 @@
                 // data: scretlist,
                 success: function (data) {
                     if (data.payload != "error") {
-                        alert(data)
+
                         var result = eval(data)
                         var msg = document.getElementById("msg")
                         msg.innerHTML = ""
-                        alert(result)
+
                         for (var i in result) {
                             var r = JSON.parse(result[i]);
                             var commName = r.author_id
@@ -229,9 +229,9 @@
                             var st = r.short_text;
                             var iD = r.text_id + 200000;
                             var sid = r.id
-                            alert(sid)
+
                             msg.innerHTML = msg.innerHTML + commName + ' answer you:' + '<br>' + '<a style="padding-left: 3px" href="#" onclick="getAnswer(\'' + iD + '\',\'' + commName + '\',\'' + sid + '\')">' + st + '</a>' + '<br>'
-                            alert(msg.innerHTML)
+
 
                         }
                         if (result != "" && data != "") {
@@ -267,7 +267,8 @@
     function getLike(name){
         var colorgetter=document.getElementsByName(name);
         for(var j=0;j<colorgetter.length;j++){
-            if(colorgetter[j].style.color=="red")alert("u are already liked");
+            if(colorgetter[j].style.color=="red")
+                alert("u are already liked");
             else{
                 var c={}
                 c.id=name;
@@ -313,13 +314,11 @@
 
     function getMelden(name){
         var colorgetter=document.getElementsByName(name);
-        alert(name)
 
-        alert(colorgetter[0].innerHTML)
 
         if(colorgetter[0].style.color=="red"&&colorgetter[0].innerHTML=='<i class="bi bi-exclamation-circle"></i>')alert("u are already meldet");
         else{
-            alert("are u motherfucker sure?")
+            alert("are u sure?")
             var c={}
             c.id=name;
             $.ajax( {
@@ -355,7 +354,7 @@
     }
 
     function getAnswer(a,b,cis){
-        alert(cis)
+
         var userId=a-200000;
         var user={}
         user.id=userId
@@ -418,7 +417,7 @@
         }
     }
     function deleteItem(c){
-        alert(c)
+
         var user={}
         user.id=c
         $.ajax( {
@@ -432,7 +431,7 @@
                     alert("unknow error")
                 }
                 else{
-                    alert("gelesen")
+
                 }
 
 
@@ -468,7 +467,7 @@
 
                     $("#whatISay").val("")
 
-                    alert(co)
+
 
                     getMessege(c1,c2,c3,co)
 
@@ -479,12 +478,12 @@
 
     }
     function answerComm(authorName){
-        alert(authorName)
+
         var c2=document.getElementById("authorId")
         c2.innerHTML=authorName;
     }
     function answerComm2(authorName){
-        alert(authorName+1)
+
         var c2=document.getElementById("authorId")
         c2.innerHTML=authorName;
     }
@@ -495,7 +494,7 @@
     }
     function getMessege(autoname,myname,text,allText){
         var user={}
-        alert(allText)
+
         user.author_id=autoname;
         user.user_id= myname;
         user.text_id=allText;
@@ -512,7 +511,7 @@
                 }
 
                 else {
-                    alert("success")
+
                     // $("#whatISay").val("")
                     //
                     // var co=document.getElementById("commentArea").name
