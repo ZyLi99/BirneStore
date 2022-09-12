@@ -12,7 +12,16 @@ public class comment {
     public void setText_id(int text_id) {
         this.text_id = text_id;
     }
-
+   public comment(int id,String user_id,String short_text,int text_id,String Author_id){
+        this.user_id=user_id;
+        this.short_text=short_text;
+        this.text_id=text_id;
+        this.Author_id=Author_id;
+        this.id=id;
+   }
+   public comment(int id){
+        this.id=id;
+   }
     private int text_id;
     public int getId() {
         return id;
@@ -58,5 +67,15 @@ public class comment {
     private String Author_id;
     private String user_id;
     private String text;
+
+    public String getShort_text() {
+        return short_text;
+    }
+
+    public void setShort_text(String short_text) {
+        this.short_text = short_text;
+    }
+
+    private String short_text;
 
 }

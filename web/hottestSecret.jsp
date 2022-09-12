@@ -157,6 +157,7 @@
 </head>
 <body style="background-color: white">
 <script>
+    setInterval(
     window.onload=function(){
 
         var c=document.getElementsByClassName("service");
@@ -171,6 +172,23 @@
             c[i].onmouseout=function(){
                 this.style.color=color;
             }
+        }
+        var c4=document.getElementById("noti");
+        var c5=document.getElementById("msg");
+
+        c4.onmouseover=function () {
+            c5.style.display="block"
+        }
+
+        c5.onmouseover=function () {
+            c5.style.display="block"
+        }
+
+        c5.onmouseout=function(){
+            c5.style.display="none"
+        }
+        c4.onmouseout=function(){
+            c5.style.display="none"
         }
 
         // var c2=document.getElementsByClassName("like");
@@ -196,21 +214,35 @@
             }
 
         }
+        var cia=document.getElementById("xiala")
+        cia.onmouseover=function(){
+            var dia=document.getElementsByClassName("xia")
+            dia[0].style.display="block"
+        }
+        var dia=document.getElementsByClassName("xia")
 
 
-        // var c4=document.getElementsByClassName("answer");
-        // for(var i=0;i<c.length;i++){
-        //     var color
-        //     c4[i].onmouseover=function () {
-        //         color=this.style.color;
-        //         this.style.color="#6699ff"
-        //
-        //     }
-        //     c4[i].onmouseout=function(){
-        //         this.style.color=color;
-        //     }
-        //
-        // }
+
+        dia[0].onmouseover=function(){
+
+
+            dia[0].style.display="block"
+        }
+        dia[0].onmouseout=function(){
+
+
+            dia[0].style.display="none"
+        }
+
+        cia.onmouseout=function(){
+            var dia=document.getElementsByClassName("xia")
+            dia[0].style.display="none"
+        }
+
+
+
+
+
 
 
         // var c5=document.getElementsByClassName("melden");
@@ -226,6 +258,8 @@
         //     }
         //
         // }
+
+
         $.ajax( {
             type :"POST",
             url :"/getText",
@@ -255,7 +289,39 @@
                              }
 
                     }
+                    $.ajax( {
+                        type :"POST",
+                        url :"/getMees",
+                        // data: scretlist,
+                        success : function(data) {
+                            if (data.payload != "error") {
+                                alert(data)
+                                var result = eval(data)
+                                var msg=document.getElementById("msg")
+                                msg.innerHTML=""
+                                alert(result)
+                                for (var i in result) {
+                                    var r=JSON.parse(result[i]);
+                                    var commName=r.author_id
+                                    var myName=r.user_id
+                                    var st=  r.short_text;
+                                    var iD=r.text_id+200000;
+                                    var sid=r.id
+                                    alert(sid)
+                                    msg.innerHTML=msg.innerHTML+commName+' answer you:'+'<br>'+'<a style="padding-left: 3px" href="#" onclick="getAnswer(\''+iD+'\',\''+commName+'\',\''+sid+'\')">'+st+'</a>'+'<br>'
+                                    alert(msg.innerHTML)
 
+                                }
+                                if(result!=""&&data!=""){
+                                blingbling()}
+                            }
+
+
+                        }
+
+
+
+                    })
 
                 }
 
@@ -265,12 +331,14 @@
                 }}
 
         })
+
+
  $(".melden").attr("onclick","getMelden(this.name)");
-        $(".answer").attr("onclick","getAnswer(this.name)");
+        $(".answer").attr("onclick","getAnswer(this.name,'','')");
 
 
 
-    }
+    },10000000)
     function getLike(name){
        var colorgetter=document.getElementsByName(name);
        for(var j=0;j<colorgetter.length;j++){
@@ -361,7 +429,8 @@
 
     }
 
-function getAnswer(a){
+function getAnswer(a,b,cis){
+        alert(cis)
         var userId=a-200000;
         var user={}
     user.id=userId
@@ -389,9 +458,13 @@ function getAnswer(a){
                     commA.innerHTML=text;
                     var d1=document.getElementById("myUserId")
                     d1.innerHTML=myName
-
+                    if(b==''){
                     var d2=document.getElementById("authorId")
-                    d2.innerHTML=commName
+                    d2.innerHTML=commName}
+                    else{
+                        var d2=document.getElementById("authorId")
+                        d2.innerHTML=b
+                    }
 
                 }
                 else{
@@ -400,7 +473,11 @@ function getAnswer(a){
                     var d111=document.getElementById("myUserId")
                     d111.innerHTML=myName
                     var d21=document.getElementById("authorId")
-                    d21.innerHTML=commName
+                    if(b==''){
+                    d21.innerHTML=commName}
+                    else{
+                        d21.innerHTML=b
+                    }
                 }
 
 
@@ -411,8 +488,33 @@ function getAnswer(a){
             }}
 
     })
+    if(b!=''&&cis!=''){
+        deleteItem(cis)
+    }
 }
+function deleteItem(c){
+        alert(c)
+    var user={}
+    user.id=c
+    $.ajax( {
+        type :"POST",
+        url :"/deleteIt",
+        data: user,
+        success : function(result) {
+            result= JSON.parse(result);
 
+            if(result.payload=="用户不存在"){
+                alert("unknow error")
+            }
+            else{
+                alert("gelesen")
+            }
+
+
+        }})
+
+
+}
 function updateMyComm(){
         var c=document.getElementById("vorherigeComment").innerHTML
         var c1=document.getElementById("myUserId").innerHTML
@@ -425,7 +527,7 @@ function updateMyComm(){
     var user={}
     user.text_id=document.getElementById("commentArea").name;
     user.text=comit
-
+    var co=document.getElementById("commentArea").name
     $.ajax( {
         type :"POST",
         url :"/insertComment",
@@ -440,6 +542,10 @@ function updateMyComm(){
             else {
 
                 $("#whatISay").val("")
+
+                alert(co)
+
+                getMessege(c1,c2,c3,co)
 
             }}
 
@@ -462,6 +568,61 @@ function CloseMe() {
     var des1 = document.getElementById("commentArea")
     des1.style.display="none"
 }
+function getMessege(autoname,myname,text,allText){
+        var user={}
+    alert(allText)
+    user.author_id=autoname;
+    user.user_id= myname;
+    user.text_id=allText;
+    user.short_text=text;
+    $.ajax( {
+        type :"POST",
+        url :"/getMessege",
+        data: user,
+        success : function(result) {
+            result= JSON.parse(result);
+
+            if(result.payload=="error"){
+                alert("unknow error")
+            }
+
+            else {
+               alert("success")
+                // $("#whatISay").val("")
+                //
+                // var co=document.getElementById("commentArea").name
+
+
+
+            }}
+
+    })
+
+
+}
+function blingbling(){
+
+  var c=document.getElementById("noti")
+    setTimeout( function(){c.style.color="#a64dff"
+        setTimeout( function(){c.style.color="#ffa31a"
+            setTimeout( function(){c.style.color="#ffff4d"
+                setTimeout( function(){c.style.color="#00b300"
+                    setTimeout( function(){c.style.color="#99ffd6"
+                        setTimeout( function(){c.style.color="#80ccff"
+                            setTimeout( function(){c.style.color="#ff1a1a"},700)},700)},700)},700)},700)},700)},700)
+
+var st=document.getElementById("news")
+    st.style.color="red"
+}
+function shutdown(){
+    var c=document.getElementById("noti")
+    c.style.color="snow"
+    var m=document.getElementById("newMessege")
+    m.style.display="block"
+    var st=document.getElementById("news")
+    st.style.color="snow"
+}
+
 </script>
 <img  src="../img/sky.jpg" style="width:1311px;position: relative;right: 10px;bottom: 10px;z-index: 0"/>
 <div class="logo"> Keep&nbspScret&nbsp&nbsp<span><i class="bi bi-arrow-through-heart"></i></span> </div>
@@ -469,18 +630,22 @@ function CloseMe() {
 <div class="serviceDiv">
     <a  class="service" href="">share-my-secret</a>
     <a class="service" href="">Message Square</a>
-    <a class="service" href="">New-Screts</a>
-    <a class="service" href="">My-Screts</a>
-
+    <a  class="service" href="">New-Screts</a>
+    <a  class="service" id="noti"  style="position: relative;left:100px" href="#"><i class="bi bi-chat-heart"></i></a>
+    <div id="newMessege" style="display: none"></div>
 </div>
-<div style="position: absolute;bottom: 535px;left:1130px;backgroud:rgba(R,G, B, A)" class="dropdown">
-    <a style="opacity: 0.4;background-color: #668cff" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
-        Help
+<div style="position: absolute;bottom: 515px;left:1050px;width:110px;height:60px;background-color: none;border-radius: 10px;z-index: 999999">
+    <a class=" service" id="xiala" href="#" style="background-color: none;font-size:20px;width:110px;height:90px;color: snow;" >
+        &nbsp &nbspHome&nbsp &nbsp
+        <div  class="xia" style="display: none;background-color: cornflowerblue;width:120px;position: relative;bottom:8px">
+            <ul>
+
+                <li class="xia1"><a id="news" style="color: snow;position: relative;right:10px" href="#">News<i class="bi bi-arrow-right-circle-fill"></i></a></li>
+                <li class="xia1"><a style="color: snow" href="#">&nbsp&nbsp&nbspHistory</a></li>
+            </ul>
+        </div>
     </a>
 
-    <div style="background-color:  #ccd9ff;opacity: 0.5;position: absolute;right: 50px !important;" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="#">Contact Admin</a>
-    </div>
 </div>
 <div id="lunbo">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -701,6 +866,9 @@ function CloseMe() {
         <button style="border-radius: 0.3;background-color: snow;margin-left:10px;position: absolute;bottom: 30px;left:400px;border-radius: 20px;background-color: cornflowerblue;border: solid cornflowerblue;color: white;font-weight: blod" onclick="CloseMe()">Close</button>
     </div>
 </div>
-
+<div id="msg" style="display:none;position:absolute;bottom:487px;left:1120px;width:130px;height: 60px;overflow: auto;background-color: cornflowerblue">
+ <a href="#" onclick="shutdown()"> sds</a>
+</div>
 </body>
+
 </html>

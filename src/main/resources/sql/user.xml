@@ -68,7 +68,15 @@
     </insert>
     <update id="updateText" parameterType="java.util.HashMap">
         update commt set text=#{inhalt} where text_id=#{text_id}
-        update commt set text=#{inhalt} where text_id=#{text_id}
-    </update>
 
+    </update>
+    <insert id="insertMess" parameterType="java.util.HashMap">
+        insert into messege(user_id,short_text,text_id,author_id)value(#{User_id},#{Short_text},#{text_id},#{Author_id})
+    </insert>
+   <select id="searchMess" parameterType="string" resultType="com.study.bean.comment">
+       select id, user_id,short_text,text_id,author_id from messege where user_id=#{a}
+   </select>
+    <delete parameterType="int" id="deleteIt">
+        delete from messege where id=#{num}
+    </delete>
 </mapper>

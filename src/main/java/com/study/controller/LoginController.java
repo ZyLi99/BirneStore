@@ -202,4 +202,55 @@ public class LoginController {
 
         return MyResponse.success("更新成功");
     }
+
+    @PostMapping("/getMessege")
+    public String getMessege(comment Id, HttpServletRequest request){
+
+        int text_id=Id.getText_id();
+        String inhalt=Id.getShort_text();
+        String myName=Id.getUser_id();
+        String hisName=Id.getAuthor_id();
+        HashMap hash=new HashMap();
+        hash.put("text_id",text_id);
+        hash.put("Short_text",inhalt);
+        hash.put("User_id",myName);
+        hash.put("Author_id",hisName);
+
+       int res=userDao.insertMess(hash);
+       if(res==0)MyResponse.failed("error");
+
+        return MyResponse.success("更新成功");
+    }
+
+    @PostMapping("/getMees")
+    public String getMees(comment Id, HttpServletRequest request){
+
+        HttpSession session=request.getSession();
+        String username= (String) session.getAttribute("username");
+        List<comment> res=userDao.searchMess(username);
+
+        for(comment a:res){
+            String s=a.getShort_text();
+            if(s.length()>=10){
+            s=s.substring(0,9)+"...";
+            a.setShort_text(s);}
+
+        }
+        if(res==null)MyResponse.failed("error");
+        JSONArray arr=new JSONArray();
+        for(comment a:res){
+            arr.add(JSON.toJSONString(a));
+        }
+
+        return arr.toString();
+    }
+
+    @PostMapping("/deleteIt")
+    public String deleteIt(comment Id, HttpServletRequest request){
+
+       int idNum=Id.getId();
+       int req=userDao.deleteIt(idNum);
+        if(req==0)MyResponse.failed("error");
+        return MyResponse.success("success");
+    }
 }

@@ -3,6 +3,7 @@ package com.study.dao;
 
 import com.study.bean.SecretList;
 import com.study.bean.User;
+import com.study.bean.comment;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -28,4 +29,7 @@ public interface UserDao {
     String searchVorherigText(int id);
     int insertText(HashMap text);
     int updateText(HashMap text);
+    int insertMess(HashMap hash);
+    List<comment>searchMess(String a);
+    int deleteIt(int num);
 }
