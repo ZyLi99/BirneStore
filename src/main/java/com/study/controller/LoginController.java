@@ -2,10 +2,7 @@ package com.study.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.study.bean.MyResponse;
-import com.study.bean.SecretList;
-import com.study.bean.User;
-import com.study.bean.comment;
+import com.study.bean.*;
 import com.study.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -252,5 +249,52 @@ public class LoginController {
        int req=userDao.deleteIt(idNum);
         if(req==0)MyResponse.failed("error");
         return MyResponse.success("success");
+    }
+
+    @PostMapping("/getPages")
+    public String getPages(comment Id, HttpServletRequest request){
+        HttpSession session=request.getSession();
+        String username= (String) session.getAttribute("username");
+        int list= userDao.getAllMyS(username);
+        int sum=list/4+(list%4==0?0:1);
+        return String.valueOf(sum);
+    }
+    @PostMapping("/getPageText")
+    public String getPageText(Page Id, HttpServletRequest request){
+        int idNum=Id.getId();
+        idNum=(idNum-1)*4;
+        HttpSession session=request.getSession();
+        String username= (String) session.getAttribute("username");
+        HashMap hash=new HashMap();
+        hash.put("page_id",idNum);
+        hash.put("username",username);
+        List<SecretList> list= userDao.getTexta2(hash);
+        JSONArray arr=new JSONArray();
+        for(SecretList a:list){
+            arr.add(JSON.toJSONString(a));
+        }
+
+        return arr.toString();
+    }
+    @PostMapping("/getPages2")
+    public String getPages2(comment Id, HttpServletRequest request){
+
+        int list= userDao.getAllText();
+        int sum=list/4+(list%4==0?0:1);
+        return String.valueOf(sum);
+    }
+    @PostMapping("/getPageText2")
+    public String getPageText2(Page Id, HttpServletRequest request){
+        int idNum=Id.getId();
+        idNum=(idNum-1)*4;
+        HashMap hash=new HashMap();
+        hash.put("page_id",idNum);
+        List<SecretList> list= userDao.getTexta3(hash);
+        JSONArray arr=new JSONArray();
+        for(SecretList a:list){
+            arr.add(JSON.toJSONString(a));
+        }
+
+        return arr.toString();
     }
 }

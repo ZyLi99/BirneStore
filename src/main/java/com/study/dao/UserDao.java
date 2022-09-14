@@ -32,4 +32,8 @@ public interface UserDao {
     int insertMess(HashMap hash);
     List<comment>searchMess(String a);
     int deleteIt(int num);
+    int getAllMyS(String username);
+    List<SecretList> getTexta2(HashMap hash);
+    int getAllText();
+    List<SecretList> getTexta3(HashMap hash);
 }

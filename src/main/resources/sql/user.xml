@@ -36,7 +36,7 @@
         insert into text(username,text,datetime)values(#{username},#{text},#{dateTime})
     </insert>
     <select id="getTexta"   resultType="com.study.bean.SecretList">
-        select id,username,text,dateTime from text
+        select id,username,text,dateTime from text order by likes desc
     </select>
     <select id="getLikes" parameterType="Integer" resultType="Integer">
         select likes from text where id=#{name}
@@ -79,4 +79,18 @@
     <delete parameterType="int" id="deleteIt">
         delete from messege where id=#{num}
     </delete>
+    <select id="getAllMyS" parameterType="string" resultType="int">
+        select count(*) from text where username=#{username}
+    </select>
+    <select id="getTexta2" parameterType="java.util.HashMap" resultType="com.study.bean.SecretList">
+        select id,username,text,dateTime from text where username=#{username}
+                                                  LIMIT #{page_id},4
+    </select>
+    <select id="getAllText"  resultType="int">
+        select count(*) from text
+    </select>
+    <select id="getTexta3" parameterType="java.util.HashMap" resultType="com.study.bean.SecretList">
+        select id,username,text,dateTime from text order by dateTime desc
+            LIMIT #{page_id},4
+    </select>
 </mapper>

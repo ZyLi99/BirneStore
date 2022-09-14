@@ -88,6 +88,7 @@ public class SecretList {
         DateTime = dateTime;
     }
     public SecretList(int id,String username, String text, String dateTime) {
+        this.id=id;
         this.username = username;
         this.text = text;
         DateTime = dateTime;

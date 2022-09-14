@@ -347,7 +347,7 @@
 
             $.ajax({
               type: "POST",
-              url: "/getPages",
+              url: "/getPages2",
               // data: scretlist,
               success: function (data) {
                 var prevPage=document.getElementById("myPage")
@@ -724,7 +724,7 @@ function subPage(id,data){
   user.id=id;
   $.ajax( {
     type :"POST",
-    url :"/getPageText",
+    url :"/getPageText2",
     data: user,
     success : function(data) {
       var result= eval(data)

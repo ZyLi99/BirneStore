@@ -554,7 +554,7 @@
 <div class="serviceDiv">
     <a class="service" href="shareSecret.jsp">share-my-secret</a>
     <a class="service" href="hottestSecret.jsp">Message Square</a>
-    <a class="service" href="">New-Screts</a>
+    <a class="service" href="newSecret.jsp">New-Screts</a>
     <a  class="service" id="noti"  style="position: relative;left:100px" href="#"><i class="bi bi-chat-heart"></i></a>
     <div id="newMessege" style="display: none"></div>
 </div>
